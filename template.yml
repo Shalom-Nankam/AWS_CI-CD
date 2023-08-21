@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"  
-Description: test workload deployment pipelines template
+Description: workload deployment pipelines template
 
 Parameters: 
   ProjectName:  
@@ -14,9 +14,10 @@ Parameters:
     Description: Enter your github username
     Type: String
   
-  GithubToken: 
+  GithubAccessToken: 
     Description: Enter the personal-user-token you generated from github
     Type: String
+    NoEcho: True
      
 Resources:
   ArtifactBucket:
@@ -53,7 +54,7 @@ Resources:
     Type: "AWS::CodeCommit::Repository"
     DependsOn: SNSRepoTrigger
     Properties:
-      RepositoryName: !Sub ${ProjectName}-Repo
+      RepositoryName: !Sub ${ProjectName}
       Triggers:
       - Name: MasterTrigger
         CustomData: !Ref "AWS::StackName"
@@ -72,7 +73,7 @@ Resources:
   PipelineRole:  
     Type: AWS::IAM::Role  
     Properties:  
-      RoleName: !Sub ${ProjectName}-codepipeline-role  
+      RoleName: !Sub ${ProjectName}-pipeline-role  
       AssumeRolePolicyDocument:  
         Version: "2012-10-17"  
         Statement:  
@@ -191,40 +192,40 @@ Resources:
         Type: S3
         Location: !Ref ArtifactBucket
       Stages:  
-        # - Name: GithubSource  
-        #   Actions:  
-        #     - InputArtifacts: []  
-        #       Name: code  
-        #       RunOrder: 1  
-        #       ActionTypeId:  
-        #         Category: Source  
-        #         Owner: ThirdParty  
-        #         Version: 1  
-        #         Provider: GitHub  
-        #       OutputArtifacts:  
-        #         - Name: CodeWorkspace  
-        #       Configuration:  
-        #         Owner: !Ref GithubUsername
-        #         Repo: !Ref GithubRepo
-        #         OAuthToken: !Ref GithubToken
-        #         Branch: main  
-
-        - Name: CodeCommitSource  
+        - Name: GithubSource  
           Actions:  
             - InputArtifacts: []  
               Name: code  
               RunOrder: 1  
               ActionTypeId:  
                 Category: Source  
-                Owner: AWS  
+                Owner: ThirdParty  
                 Version: 1  
-                Provider: CodeCommit  
+                Provider: GitHub  
               OutputArtifacts:  
                 - Name: CodeWorkspace  
               Configuration:  
-                RepositoryName: !Sub ${ProjectName}-Repo
-                BranchName: main  
-                PollForSourceChanges: "true"             
+                Owner: !Ref GithubUsername
+                Repo: !Ref GithubRepo
+                OAuthToken: !Ref GithubToken
+                Branch: main  
+
+        # - Name: CodeCommitSource  
+        #   Actions:  
+        #     - InputArtifacts: []  
+        #       Name: code  
+        #       RunOrder: 1  
+        #       ActionTypeId:  
+        #         Category: Source  
+        #         Owner: AWS  
+        #         Version: 1  
+        #         Provider: CodeCommit  
+        #       OutputArtifacts:  
+        #         - Name: CodeWorkspace  
+        #       Configuration:  
+        #         RepositoryName: !Sub ${ProjectName}-Repo
+        #         BranchName: main  
+        #         PollForSourceChanges: "true"             
                 
         - Name: DEVELOP
           Actions:  

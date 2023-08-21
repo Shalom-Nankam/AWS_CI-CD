@@ -6,6 +6,5 @@ phases:
  
   build:
     commands:
-      - pwd
       - echo $WEBSITE_BUCKET_NAME
       - aws s3 cp index.html s3://$WEBSITE_BUCKET_NAME/
