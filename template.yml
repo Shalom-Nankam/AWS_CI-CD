@@ -17,7 +17,7 @@ Parameters:
   GithubAccessToken: 
     Description: Enter the personal-user-token you generated from github
     Type: String
-    NoEcho: True
+    NoEcho: true
      
 Resources:
   ArtifactBucket:
@@ -207,7 +207,7 @@ Resources:
               Configuration:  
                 Owner: !Ref GithubUsername
                 Repo: !Ref GithubRepo
-                OAuthToken: !Ref GithubToken
+                OAuthToken: !Ref GithubAccessToken
                 Branch: main  
 
         # - Name: CodeCommitSource  
