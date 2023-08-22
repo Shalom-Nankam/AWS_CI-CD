@@ -3,7 +3,7 @@ Description: workload deployment pipelines template
 
 Parameters: 
   ProjectName:  
-    Description: Give the project a name. E.g test-project
+    Description: Give the project a name. E.g test-project #Do not use an underscore(_) in the name.
     Type: String  
 
   GithubRepo:
