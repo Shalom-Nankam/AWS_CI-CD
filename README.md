@@ -5,7 +5,7 @@ The repository you have cloned contains the following files:
 - template.yml
 - buildspec.yml
 - README.md 
-- index.html 
+- index.html
 Each of these files will play a role in this project.
 ### Follow the steps below carefully to set up your first pipeline on aws:
 #### STEP 1: Repository Setup (GitHub as Source)
